@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Library Management</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Library Management System</h1>
+
+  <div>
+    <h2>Add User</h2>
+    <input type="text" id="userId" placeholder="User ID" />
+    <button onclick="addUser()">Add User</button>
+  </div>
+
+  <div>
+    <h2>Add Book</h2>
+    <input type="number" id="bookId" placeholder="Book ID" />
+    <input type="text" id="title" placeholder="Title" />
+    <input type="text" id="author" placeholder="Author" />
+    <input type="number" id="quantity" placeholder="Quantity" />
+    <button onclick="addBook()">Add Book</button>
+  </div>
+
+  <div>
+    <h2>Borrow Book</h2>
+    <input type="text" id="borrowUserId" placeholder="User ID" />
+    <input type="number" id="borrowBookId" placeholder="Book ID" />
+    <button onclick="borrowBook()">Borrow</button>
+  </div>
+
+  <div>
+    <h2>Return Book</h2>
+    <input type="text" id="returnUserId" placeholder="User ID" />
+    <input type="number" id="returnBookId" placeholder="Book ID" />
+    <button onclick="returnBook()">Return</button>
+  </div>
+
+  <div>
+    <h3>📜 Get User History</h3>
+    <input type="text" id="historyUserId" placeholder="Enter User ID" />
+    <button onclick="getHistory()">Get History</button>
+    <ul id="historyList"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

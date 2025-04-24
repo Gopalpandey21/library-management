@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📚 Library Management System</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+
+    .navbar {
+      background-color: #333;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-buttons button {
+      margin-left: 10px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .book-section {
+      padding: 2rem;
+    }
+
+    .book-section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .book-section li {
+      background-color: #fff;
+      margin-bottom: 10px;
+      padding: 1rem;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 12% auto;
+      padding: 2rem;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .modal-content input {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+    }
+
+    .modal-content button {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    /* Center alignment for vertical or horizontal line */
+    hr, .vr {
+      margin: 20px auto;
+      border: none;
+      border-top: 1px solid #ccc;
+      width: 80%;
+    }
+
+    .vr {
+      height: 100px;
+      width: 1px;
+      background-color: #ccc;
+    }
+
+    .book-controls {
+  margin: 1rem 2rem;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.book-controls input,
+.book-controls select {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+  </style>
+
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <h1>📚 Library System</h1>
+    <div class="nav-buttons">
+      <button onclick="openModal('addUserModal')">Add User</button>
+      <button onclick="openModal('addBookModal')">Add Book</button>
+      <button onclick="openModal('borrowModal')">Borrow Book</button>
+      <button onclick="openModal('returnModal')">Return Book</button>
+      <button onclick="openModal('historyModal')">User History</button>
+    </div>
+  </nav>
+
+  <!-- Book List on Homepage -->
+  <section class="book-section">
+    <h2>📖 Available Books</h2>
+    <ul id="bookList"></ul>
+  </section>
+
+  <!-- Modals -->
+  <div id="addUserModal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeModal('addUserModal')" class="close">&times;</span>
+      <h2>Add User</h2>
+      <input id="userId" placeholder="User ID" />
+      <input id="name" placeholder="Name" />
+      <input id="courseId" placeholder="Course ID" />
+      <input id="semester" placeholder="Semester" />
+      <button onclick="addUser()">Submit</button>
+    </div>
+  </div>
+
+  <div id="addBookModal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeModal('addBookModal')" class="close">&times;</span>
+      <h2>Add Book</h2>
+      <input id="bookId" placeholder="Book ID" />
+      <input id="title" placeholder="Title" />
+      <input id="author" placeholder="Author" />
+      <input id="quantity" placeholder="Quantity" />
+      <button onclick="addBook()">Submit</button>
+    </div>
+  </div>
+
+  <div id="borrowModal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeModal('borrowModal')" class="close">&times;</span>
+      <h2>Borrow Book</h2>
+      <input id="borrowUserId" placeholder="User ID" />
+      <input id="borrowBookId" placeholder="Book ID" />
+      <button onclick="borrowBook()">Submit</button>
+    </div>
+  </div>
+
+  <div id="returnModal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeModal('returnModal')" class="close">&times;</span>
+      <h2>Return Book</h2>
+      <input id="returnUserId" placeholder="User ID" />
+      <input id="returnBookId" placeholder="Book ID" />
+      <button onclick="returnBook()">Submit</button>
+    </div>
+  </div>
+
+  <div id="historyModal" class="modal">
+    <div class="modal-content">
+      <span onclick="closeModal('historyModal')" class="close">&times;</span>
+      <h2>User Borrow History</h2>
+      <input id="historyUserId" placeholder="User ID" />
+      <button onclick="getHistory()">Get History</button>
+      <ul id="historyList"></ul>
+    </div>
+
+
+    <!-- Book Controls -->
+<section class="book-controls">
+  <input type="text" id="searchInput" placeholder="Search by title or author..." oninput="filterBooks()" />
+  
+  <select id="filterOption" onchange="filterBooks()">
+    <option value="all">All Books</option>
+    <option value="available">Available Only</option>
+  </select>
+
+  <select id="sortOption" onchange="filterBooks()">
+    <option value="default">Sort By</option>
+    <option value="title">Title (A-Z)</option>
+    <option value="quantity">Quantity (High to Low)</option>
+  </select>
+</section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
