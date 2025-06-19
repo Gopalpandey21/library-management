@@ -131,3 +131,32 @@ exports.getUserHistory = async (req, res) => {
 
   res.json(history);
 };
+
+
+// admin 
+exports.getBooksGroupedByDept = (req, res) => {
+  const books = [];
+  bookTree.inOrderTraversal(bookTree.root, book => books.push(book));
+
+  const grouped = books.reduce((acc, book) => {
+    const dept = book.department || "Unknown";
+    acc[dept] = acc[dept] || [];
+    acc[dept].push(book);
+    return acc;
+  }, {});
+  res.json(grouped);
+};
+
+exports.getUsersGroupedByDept = (req, res) => {
+  const users = userTable.getAllUsers();
+
+  const grouped = users.reduce((acc, user) => {
+    const dept = user.courseId?.includes("CS") ? "CS" :
+                 user.courseId?.includes("MGMT") ? "Management" : "Other";
+
+    acc[dept] = acc[dept] || [];
+    acc[dept].push(user);
+    return acc;
+  }, {});
+  res.json(grouped);
+};

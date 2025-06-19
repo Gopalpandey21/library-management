@@ -12,18 +12,25 @@ window.onload = () => {
   getAllBooks();
 };
 
+// async function getAllBooks() {
+//   const res = await fetch(baseURL + "/get-all-books");
+//   const books = await res.json();
+//   const list = document.getElementById("bookList");
+//   list.innerHTML = "";
+// console.log(books);
+//   books.forEach(book => {
+//     const li = document.createElement("li");
+//     li.textContent = `ID: ${book.id}, ${book.title} by ${book.author} - Qty: ${book.quantity}`;
+//     list.appendChild(li);
+//   });
+//   filterBooks();
+// }
+
 async function getAllBooks() {
   const res = await fetch(baseURL + "/get-all-books");
-  const books = await res.json();
-  const list = document.getElementById("bookList");
-  list.innerHTML = "";
-console.log(books);
-  books.forEach(book => {
-    const li = document.createElement("li");
-    li.textContent = `ID: ${book.id}, ${book.title} by ${book.author} - Qty: ${book.quantity}`;
-    list.appendChild(li);
-  });
-  filterBooks();
+  allBooks = await res.json(); // Save for filtering
+  console.log(allBooks); // See if it's there
+  filterBooks(); // Will display based on search/filter/sort
 }
 
 async function addUser() {
